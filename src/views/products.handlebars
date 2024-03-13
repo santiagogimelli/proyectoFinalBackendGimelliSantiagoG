@@ -1,0 +1,185 @@
+<article>
+  <header>
+    <h1>Bienvenido <strong>{{this.user.first_name}} {{this.user.last_name}}</strong></h1>
+    <button id="logout">Logout</button>
+  </header>
+  <p>Nombre: {{this.user.first_name}}</p>
+  <p>Apellido: {{this.user.last_name}}</p>
+  <p>Correo: {{this.user.email}}</p>
+  <p>Tipo de Usuario: <strong>{{this.user.rol}}</strong> </p>
+  
+  <footer>
+    {{!-- <a href="/api/sessions/logout" role="button">Logout</a> --}}
+  
+{{!-- </article> --}}
+
+{{!-- <article> --}}
+
+  {{#ifCond this.user.rol '!==' 'admin'}}
+{{!-- <h1>Carrito</h1> --}}
+<div>
+  <div class="cart">
+    {{!-- <h3>Carrito</h3> --}}
+    {{!-- <p>cartId {{cartId}}</p> --}}
+    {{!-- <ul>
+      {{#if this.carrito}}
+        {{#each carrito}}
+          <li>
+            
+            <p><strong>Title:</strong> {{this.productId.title}}<strong> - Description:</strong> {{this.productId.description}} - <strong>Code:</strong> {{this.productId.code}} - <strong>Price:</strong> ${{this.productId.price}}.- <strong>Quantity:</strong> {{this.quantity}}</p>
+          
+          </li>
+        {{/each}}
+      {{else}}
+        <li>No hay productos en el carrito.</li>
+      {{/if}}
+    </ul> --}}
+  <button id="btnComprarCarrito" value={{cartId}}>Ver Carrito 🛒</button>
+  </div>
+</div>
+
+{{else}}
+<div>
+  <button id="usuarios">Usuarios</button>
+</div>
+{{/ifCond}}
+</footer>
+</article>
+<h1>Productos</h1>
+<table id="main" role="grid">
+<tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Descripción</th>
+    <th>Código</th>
+    <th>Precio</th>
+    <th>Stock</th>
+    <th>Categoria</th>
+    <th>Cantidad</th>
+    <th>Agregar</th>
+    <th>Imágenes</th>
+  </tr>
+  {{#each payload}}
+  <tr>
+    <td>{{this._id}}</td>
+    <td>{{this.title}}</td>
+    <td>{{this.description}}</td>
+    <td>{{this.code}}</td>
+    <td>{{this.price}}</td>
+    <td>{{this.stock}}</td>
+    <td>{{this.category}}</td>
+    <td><input type="number" id={{this._id}} style="width: 80px;" required min="1"></td>
+    <td><button id={{this._id}} class="boton">➕</button></td>
+    <td>
+  {{#if this.thumbnails}}
+    {{#each this.thumbnails}}
+      <img src="./productImages/{{this}}" alt="no-image"/>
+    {{/each}}
+  {{else}}
+    <!-- Handle the case where thumbnails are undefined or empty -->
+    No Image
+  {{/if}}
+</td>
+  </tr>
+  {{/each}}
+</table>
+
+
+<p>Página actual: {{page}}</p>
+
+<a href="{{prevLink}}" role="button" {{#unless hasPrevPage}}disabled{{/unless}} >⏪</a>
+<a href="{{nextLink}}" role="button" {{#unless hasNextPage}}disabled{{/unless}} >⏩</a>
+
+<div id="carts">
+</div>
+  
+{{#ifCond this.user.rol '===' 'admin'}}
+
+<div>
+  <h1>Products</h1>
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <!-- Columna 1 -->
+        <div style="flex: 1;">
+          <form action="/api/products" method="post" enctype="multipart/form-data">
+            <h1>Create Product</h1>
+            <label for="title">Title:</label>
+            <input type="text"  name="title" required>
+
+            <label for="description">Description:</label>
+            <input type="text"  name="description">
+
+            <label for="code">Code:</label>
+            <input type="text"  name="code" required>
+
+            <label for="price">Price:</label>
+            <input type="number"  name="price" required>
+
+            <label for="stock">Stock:</label>
+            <input type="number"  name="stock" required>
+
+            <label for="category">Category:</label>
+            <input type="text"  name="category" required>
+            
+            
+            <input type="file" name="thumbnails" multiple>
+            <input type="submit"></input>
+
+
+          </form>
+        </div>
+        <!-- Columna 2 -->
+        <div style="flex: 1;">
+          <form id="form-delete-product">
+            <h1>Delete Product</h1>
+            <label for="input-id-product">ID:</label>
+            <input type="text" id="input-id-product" name="id" required>
+            <button type="submit">Delete</button>
+          </form>
+        </div>
+        <!-- Columna 3 -->
+        <div style="flex: 1;">
+          <form id="form-update-product">
+            <h1>Update Product</h1>
+            <label for="input-id-product-update">ID:</label>
+            <input type="text" id="input-id-product-update" name="id" required>
+            
+            <label for="input-title-update">Title:</label>
+            <input type="text" id="input-title-update" name="title-update" required>
+
+            <label for="input-description-update">Description:</label>
+            <input type="text" id="input-description-update" name="description-update">
+
+            <label for="input-code-update">Code:</label>
+            <input type="text" id="input-code-update" name="code-update" required>
+
+            <label for="input-price-update">Price:</label>
+            <input type="text" id="input-price-update" name="price-update" required>
+
+            <label for="input-stock-update">Stock:</label>
+            <input type="text" id="input-stock-update" name="stock-update" required>
+
+            <label for="input-category-update">Category:</label>
+            <input type="text" id="input-category-update" name="category-update" required>
+            <button type="submit">Update</button>
+          </form>
+        </div>
+    </div>
+</div>
+{{/ifCond}}
+{{!-- 
+<h1>Products in Real Time</h1>
+<div id="log-products-in-real-time">
+</div> --}}
+
+{{!-- <h1>Tickets</h1>
+<div style="display: flex; flex-direction: row; justify-content: space-between;">
+</div> --}}
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+

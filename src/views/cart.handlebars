@@ -1,0 +1,46 @@
+{{!-- <h1>Carrito {{this.cartId}}</h1> --}}
+
+<table id="main" role="grid">
+    {{!-- <tr>
+        <th>Cart ID</th>
+    </tr> --}}
+    {{!-- <tr>
+        <td>{{this._id}}</td>
+    </tr> --}}
+    <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Cantidad</th>
+        <th>Eliminar</th>
+    </tr>
+    {{#each payload}}
+    <tr>
+        <td>{{this.productId._id}}</td>
+        <td>{{this.productId.title}}</td>
+        <td>{{this.productId.price}}</td>
+        <td>{{this.productId.stock}}</td>
+        <td>{{this.quantity}}</td>
+        <td><button id={{this.productId._id}} class="eliminar">⛔</button></td>
+    </tr>
+    {{/each}}
+
+</table>
+<div style="display: flex; flex-direction: row; justify-content: space-between;">
+    <!-- Columna 1 -->
+    <div style="flex: 1;">
+        <button type="submit" value="{{this.cartId}}" id="comprarBtn">Comprar</button>
+    </div>
+    <div style="flex: 1;">
+        <button type="button" id="volverBtn">Volver</button>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/cart.js"></script>
+{{!-- <script src="/js/index.js"></script> --}}
+<script>
+    document.getElementById('volverBtn').addEventListener('click', function() {
+        window.history.back();
+    });
+</script>
